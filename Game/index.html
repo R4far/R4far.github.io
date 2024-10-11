@@ -13,7 +13,7 @@
     <header>
         <h1>Playing Game</h1>
         <div id="scoreContainer">
-            <p id="scoreParagraph">Score: 0</p>
+            <p id="scoreParagraph">Score: 0 💠</p>
             <P id="highscoreParagraph">Highscore: 0</P>
         </div>
     </header>
@@ -53,7 +53,7 @@
 
         let keyList = [3, 5, 9, 10]
         let playerScore = 0
-        document.getElementById("highscoreParagraph").textContent = "Highscore: " + localStorage.getItem("playerHighscore");
+        document.getElementById("highscoreParagraph").textContent = "Highscore: " + localStorage.getItem("playerHighscore") + " 👑";
 
         document.addEventListener('keydown', function (event) {
             var keyIndex = getKeyIndex(event.key);
@@ -77,15 +77,14 @@
 
                             playerScore += 1;
                             const scoreElement = document.getElementById("scoreParagraph");
-                            scoreElement.textContent = "Score: " + playerScore;
+                            scoreElement.textContent = "Score: " + playerScore + " 💠";
 
                             if (localStorage.getItem("playerHighscore") < playerScore) {
                                 localStorage.setItem("playerHighscore", playerScore);
-                                document.getElementById("highscoreParagraph").textContent = "Highscore: " + playerScore;
+                                document.getElementById("highscoreParagraph").textContent = "Highscore: " + playerScore + " 👑";
                             }
 
-                            const effectSound = new Audio("clickSound.wav");
-                            effectSound.play();
+                            new Audio("clickSound.wav").play();
 
                             break;
                         } else {
@@ -119,7 +118,7 @@
                     notePosition += 2;
                     note.style.top = notePosition + "px";
 
-                    if (notePosition > 725) {
+                    if (notePosition > 675) {
                         clearInterval(moveNote);
                         note.remove();
                         if (!note.classList.contains("Hit")) {
