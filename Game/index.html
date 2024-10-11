@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playing Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header>
+        <h1>Playing Game</h1>
+        <div id="scoreContainer">
+            <p id="scoreParagraph">Score: 0</p>
+            <P id="highscoreParagraph">Highscore: 0</P>
+        </div>
+    </header>
+    
+
+    <div id="mainContainer">
+
+        <div id="gameBoardContainer">
+
+            <div class="laneContainer">
+
+                <div id="lane-1" class="lane"></div>
+                <div id="lane-2" class="lane"></div>
+                <div id="lane-3" class="lane"></div>
+                <div id="lane-4" class="lane"></div>
+            
+            </div>
+
+            <div id="keyIndicatorContainer">
+                <p class="keyIndicator">D</p>
+                <p class="keyIndicator">F</p>
+                <p class="keyIndicator">J</p>
+                <p class="keyIndicator">K</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        function getKeyIndex(key) {
+            const keys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+            const index = keys.indexOf(key.toLowerCase());
+            return index !== -1 ? index : -1;
+        }
+
+        let keyList = [3, 5, 9, 10]
+        let playerScore = 0
+        document.getElementById("highscoreParagraph").textContent = "Highscore: " + localStorage.getItem("playerHighscore");
+
+        document.addEventListener('keydown', function (event) {
+            var keyIndex = getKeyIndex(event.key);
+
+            if (keyList.includes(keyIndex)) {
+                const laneToLight = document.getElementById("lane-" + (keyList.indexOf(keyIndex) + 1));
+
+                if (laneToLight) {
+                    laneToLight.classList.add("laneHighlight");
+
+                    let notes = laneToLight.getElementsByClassName("note");
+                    for (let i = 0; i < notes.length; i++) {
+
+                        let note = notes[i];
+                        let notePosition = note.getBoundingClientRect();
+                        let lanePosition = laneToLight.getBoundingClientRect();
+
+                        if (notePosition.bottom >= lanePosition.bottom - 35 && notePosition.bottom <= lanePosition.bottom + 35) {
+                            note.remove();
+                            note.classList.add("Hit");
+
+                            playerScore += 1;
+                            const scoreElement = document.getElementById("scoreParagraph");
+                            scoreElement.textContent = "Score: " + playerScore;
+
+                            if (localStorage.getItem("playerHighscore") < playerScore) {
+                                localStorage.setItem("playerHighscore", playerScore);
+                                document.getElementById("highscoreParagraph").textContent = "Highscore: " + playerScore;
+                            }
+
+                            const effectSound = new Audio("clickSound.wav");
+                            effectSound.play();
+
+                            break;
+                        } else {
+                            location.reload();
+                        }
+                    }
+
+                    setTimeout(() => {
+                        laneToLight.classList.remove("laneHighlight");
+                    }, 200);
+                } else {
+                    alert("Lane not found");
+        }
+            } else {
+                alert(keyIndex);
+            }
+        });
+
+
+        function spawnNote() {
+            let randomLane = Math.floor(Math.random() * 4) + 1;
+            const lane = document.getElementById("lane-" + randomLane);
+
+            if (lane) {
+                let note = document.createElement("div");
+                note.classList.add("note");
+                lane.appendChild(note);
+                let notePosition = 0;
+
+                const moveNote = setInterval(() => {
+                    notePosition += 2;
+                    note.style.top = notePosition + "px";
+
+                    if (notePosition > 725) {
+                        clearInterval(moveNote);
+                        note.remove();
+                        if (!note.classList.contains("Hit")) {
+                            location.reload();
+                        }
+                    }
+                }, 10);
+            }
+        }
+
+        function startSpawningNotes() {
+
+            const spawnNoteWithRandomDelay = () => {
+                spawnNote();
+                const randomDelay = getRandomIntInclusive(150, 350);
+                setTimeout(spawnNoteWithRandomDelay, randomDelay);
+            };
+
+            spawnNoteWithRandomDelay()
+        }
+
+        function getRandomIntInclusive(min, max) {
+            const minCeiled = Math.ceil(min);
+            const maxFloored = Math.floor(max);
+            return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+        }
+
+        startSpawningNotes();
+
+
+    </script>
+</body>
+</html>

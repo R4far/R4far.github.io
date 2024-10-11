@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Hero</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+
+    <div class="main-container">
+
+        <div class="section-container" id="about-container">
+            <div class="about-row-1">
+                <div class="about-element">
+                    <p class="gameDescription">Name</p>
+                    <h2>Gabriel Kallenberger</h2>
+                </div>
+            </div>
+            <div class="about-row-2">
+                <img src="Resources/Gabriels.jpg" alt="Sexy Man" id="gabrielBildchen">
+                <div class="about-element">
+                    <p id="descriptionSmall" class="gameDescription">Gabriel Kallenberger wirkt wie ein normaler Schuljunge, doch heimlich ist er verrückt. In der Mathematik sieht er nicht nur Zahlen, sondern verborgene Wesen, die sich in den Formeln verstecken und mit ihm kommunizieren. Nur er kann diese geheimnisvolle Welt wahrnehmen, während alle anderen ahnungslos bleiben.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container">
+            <h1 id="gameTitle"></i>Music Hero</h1>
+            <p class="gameDescription"><a href="https://en.wikipedia.org/wiki/Rhythm_game" target="_blank" class="highlightedWords"><span class="highlightedWords">Rhythm Game</span></a> inspired by <a href="https://www.fortnite.com/@epic/festival-main-stage?lang=de" target="_blank" class="highlightedWords">➡️<span class="highlightedWords">Fortnite Festival</span></a></p>
+            <p class="gameDescription">Made with ❤️ by <span class="highlightedWords" onclick="showPicture()">Gabriel</span> & <span class="highlightedWords">Rafael</span></p>
+            <button id="playButton"><i class='bx bx-play'></i>PLAY</button>
+        </div>
+
+        <audio id="playSound" src="Resources/game-select.wav" preload="auto"></audio>
+
+    </div>
+
+    <script>
+
+        document.getElementById("playButton").addEventListener("click", function() {
+            var eventSound = document.getElementById("playSound");
+            eventSound.play();
+
+            eventSound.onended = function() {
+                window.location.href = "Game/index.html"
+            }
+
+        });
+
+        window.onload = function() {
+            const backgroundMusic = new Audio("Resources/magic-glow.wav");
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.5;
+            backgroundMusic.play();
+        };
+        
+        function showPicture() {
+            const eventPicture = document.getElementById("about-container")
+
+            if (eventPicture.style.display === "none") {
+                eventPicture.style.display = "grid";
+            } else {
+                eventPicture.style.display = "none";
+            }
+        }
+
+    </script>
+
+    
+</body>
+</html>
